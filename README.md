@@ -6,17 +6,17 @@
 **• Multi Akun**
 **• Auto Claim Tiap 24 Jam**
 
-**Note: Hanya Bisa Login Lewat Email**
+*Note: Hanya Bisa Login Lewat Email*
 
-**Instalasi:"*
-```bash
-npm install axios readline random-useragent
+2. **Install Package**
+   ```bash
+   npm install axios readline random-useragent
 
-Cara Jalankan:
+3. **Cara Jalankan:**
 
-1. Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password
+1. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
 
-2. node functor.js
+2. **node functor.js**
 
 ## Dukungan
 

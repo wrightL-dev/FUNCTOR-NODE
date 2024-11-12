@@ -5,6 +5,7 @@
 **Fitur:**
 
 **• Multi Akun**
+
 **• Auto Claim Tiap 24 Jam**
 
 *Note: Hanya Bisa Login Lewat Email*

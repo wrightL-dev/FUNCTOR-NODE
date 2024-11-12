@@ -3,6 +3,7 @@
 ![Fitur Functor](FUNCTOR.png)
 
 **Fitur:**
+
 **• Multi Akun**
 **• Auto Claim Tiap 24 Jam**
 

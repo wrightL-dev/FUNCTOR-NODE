@@ -10,13 +10,15 @@
 
 *Note: Hanya Bisa Login Lewat Email*
 
-2. **Install Package**
+# Cara Jalankan:
+
+1. **Install Package**
    ```bash
    npm install axios readline random-useragent
 
-4. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
+2. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
 
-5. **node functor.js**
+3. **node functor.js**
 
 ## Dukungan
 

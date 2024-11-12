@@ -14,11 +14,9 @@
    ```bash
    npm install axios readline random-useragent
 
-3. **Cara Jalankan:**
+4. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
 
-1. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
-
-2. **node functor.js**
+5. **node functor.js**
 
 ## Dukungan
 

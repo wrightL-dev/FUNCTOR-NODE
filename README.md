@@ -12,13 +12,18 @@
 
 # Cara Jalankan:
 
-1. **Install Package**
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/wrightL-dev/FUNCTOR-NODE
+   cd FUNCTOR-NODE
+
+2. **Install Package**
    ```bash
    npm install axios readline random-useragent
 
-2. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
+3. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password**
 
-3. **node functor.js**
+4. **node functor.js**
 
 ## Dukungan
 

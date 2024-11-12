@@ -1,4 +1,4 @@
-#BOT FUNCTOR NODE
+# BOT FUNCTOR NODE
 
 ![Fitur Functor](FUNCTOR.png)
 

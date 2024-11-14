@@ -6,7 +6,12 @@
 
 **• Multi Akun**
 
+**• Multi Thread**
+
 **• Auto Claim Tiap 24 Jam**
+
+**• Spam Random Epoch 1-3 Menit Agar Node Aktif**
+
 
 *Note: Hanya Bisa Login Lewat Email*
 

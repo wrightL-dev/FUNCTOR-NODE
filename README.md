@@ -19,7 +19,7 @@
 
 2. **Install Package**
    ```bash
-   npm install axios readline random-useragent
+   npm install axios readline random-useragent worker_threads
 
 3. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password Sesuai Format**
 

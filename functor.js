@@ -44,7 +44,7 @@ function readAccounts() {
 
 async function claimMiningReward(userId, headers, email) {
   try {
-    await axios.get(`https://api.securitylabs.xyz/v1/users/earn/${userId}`, {
+    await axios.get(`https://apix.securitylabs.xyz/v1/users/earn/${userId}`, {
       headers
     });
     parentPort.postMessage(`\x1b[38;5;121mReward mining diklaim untuk user ${maskEmail(email)}\x1b[0m`);
@@ -57,7 +57,7 @@ async function claimMiningReward(userId, headers, email) {
 
 async function activateEpoch(headers) {
   try {
-    await axios.get("https://api.securitylabs.xyz/v1/epoch/active", {
+    await axios.get("https://apix.securitylabs.xyz/v1/epoch/active", {
       headers: {
         ...headers,
         Origin: "chrome-extension://gahmmgacnfeohncipkjfjfbdlpbfkfhi"
@@ -86,7 +86,7 @@ async function activateEpochLoop(headers) {
 }
 
 const headers = {
-  Host: "api.securitylabs.xyz",
+  Host: "apix.securitylabs.xyz",
   "Sec-Ch-Ua": '"Chromium";v="123", "Not:A-Brand";v="8"',
   Accept: "application/json, text/plain, */*",
   "Sec-Ch-Ua-Mobile": "?0",
@@ -106,7 +106,7 @@ async function workerMain() {
   const { email, password } = workerData;
   const maskedEmail = maskEmail(email);
   const headers = {
-    Host: "api.securitylabs.xyz",
+    Host: "apix.securitylabs.xyz",
     "Sec-Ch-Ua": '"Chromium";v="123", "Not:A-Brand";v="8"',
     Accept: "application/json, text/plain, */*",
     "Sec-Ch-Ua-Mobile": "?0",
@@ -126,7 +126,7 @@ async function workerMain() {
   try {
     parentPort.postMessage(`\x1b[38;5;122mMemproses akun: ${maskedEmail}\x1b[0m`);
     const checkEmailResponse = await axios.post(
-      "https://api.securitylabs.xyz/v1/auth/check-exist-email",
+      "https://apix.securitylabs.xyz/v1/auth/check-exist-email",
       { email },
       { headers }
     );
@@ -136,7 +136,7 @@ async function workerMain() {
     }
 
     const signInResponse = await axios.post(
-      "https://api.securitylabs.xyz/v1/auth/signin-user",
+      "https://apix.securitylabs.xyz/v1/auth/signin-user",
       { email, password },
       { headers }
     );
@@ -144,10 +144,10 @@ async function workerMain() {
 
     headers["Authorization"] = `Bearer ${accessToken}`;
 
-    const getUserResponse = await axios.get("https://api.securitylabs.xyz/v1/users", { headers });
+    const getUserResponse = await axios.get("https://apix.securitylabs.xyz/v1/users", { headers });
     const userId = getUserResponse.data.id;
 
-    const getWalletResponse = await axios.get("https://api.securitylabs.xyz/v1/wallets", { headers });
+    const getWalletResponse = await axios.get("https://apix.securitylabs.xyz/v1/wallets", { headers });
     const maskedWallet = maskWalletAddress(getWalletResponse.data[0].address);
     parentPort.postMessage(`\x1b[38;5;123mAlamat wallet: ${maskedWallet}\x1b[0m`);
 

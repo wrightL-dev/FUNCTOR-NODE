@@ -37,8 +37,10 @@
    ```bash
    http://username:password@ip_address:port
 
-5. **node functor.js**
-
+5. **Jalankan Script**
+   ```bash
+   node functor.js
+   
 ## Dukungan
 
 Jika Anda memiliki pertanyaan atau butuh bantuan lebih lanjut, silakan bergabung dengan saluran Telegram kami di [t.me/tahuri01](https://t.me/tahuri01).

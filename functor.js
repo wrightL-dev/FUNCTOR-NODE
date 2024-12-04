@@ -128,7 +128,7 @@ async function workerMain() {
   }
 
   try {
-    parentPort.postMessage(`[${maskEmail(email)}] Memproses akun: ${maskedEmail}`);
+    parentPort.postMessage(`[${maskEmail(email)}] Memproses akun...`);
 
     const checkEmailResponse = await axios.post(
       "https://apix.securitylabs.xyz/v1/auth/check-exist-email",

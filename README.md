@@ -28,7 +28,10 @@
    ```bash
    npm install axios readline random-useragent https-proxy-agent
 
-3. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password Sesuai Format, Dan Multi Akun Tinggal Tambahin List Di Bawah Nya**
+3. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password Sesuai Format, Dan Multi Akun Tinggal Tambahin List Di Bawah Nya, Example:**
+   ```bash
+   email@gmail.com|password123
+   email@gmail.com|password123
    
 4. **Jika ingin menggunakan proxy edit file proxy.txt, Example:**
    ```bash

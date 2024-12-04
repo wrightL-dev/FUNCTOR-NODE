@@ -10,6 +10,8 @@
 
 **• Auto Claim Tiap 24 Jam**
 
+**• Support Proxy/Tanpa Proxy**
+
 **• Spam Random Epoch 1-3 Menit Agar Node Aktif**
 
 
@@ -24,11 +26,15 @@
 
 2. **Install Package**
    ```bash
-   npm install axios readline random-useragent
+   npm install axios readline random-useragent https-proxy-agent
 
 3. **Edit File akun.txt Terlebih Dahulu Masukan Email Dan Password Sesuai Format, Dan Multi Akun Tinggal Tambahin List Di Bawah Nya**
+   
+4. **Jika ingin menggunakan proxy edit file proxy.txt, Example:**
+   ```bash
+   http://username:password@ip_address:port
 
-4. **node functor.js**
+5. **node functor.js**
 
 ## Dukungan
 

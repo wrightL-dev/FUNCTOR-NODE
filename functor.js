@@ -41,7 +41,7 @@ function readAccounts() {
 
 async function claimMiningReward(userId, headers, email, axiosConfig) {
   try {
-    await axios.get(`https://apix.securitylabs.xyz/v1/users/earn/${userId}`, axiosConfig);
+    await axios.get(`https://node.securitylabs.xyz/api/v1/users/earn/${userId}`, axiosConfig);
     parentPort.postMessage(`\x1b[38;5;121mReward mining diklaim untuk user ${maskEmail(email)}\x1b[0m`);
   } catch (error) {
     parentPort.postMessage(
@@ -55,7 +55,7 @@ async function activateEpoch(headers, axiosConfig) {
     const activateHeaders = { ...headers };
     activateHeaders.Origin = "chrome-extension://gahmmgacnfeohncipkjfjfbdlpbfkfhi";
 
-    await axios.get("https://apix.securitylabs.xyz/v1/epoch/active", { ...axiosConfig, headers: activateHeaders });
+    await axios.get("https://node.securitylabs.xyz/api/v1/epoch/active", { ...axiosConfig, headers: activateHeaders });
     parentPort.postMessage(`\x1b[38;5;121mEpoch diaktifkan\x1b[0m`);
   } catch (error) {
     parentPort.postMessage(`\x1b[38;5;168mKesalahan aktivasi epoch: ${error.message}\x1b[0m`);
@@ -95,7 +95,7 @@ async function workerMain() {
 
 
   const headers = {
-    Host: "apix.securitylabs.xyz",
+    Host: "node.securitylabs.xyz",
     "Sec-Ch-Ua": '"Chromium";v="123", "Not:A-Brand";v="8"',
     Accept: "application/json, text/plain, */*",
     "Sec-Ch-Ua-Mobile": "?0",
@@ -131,7 +131,7 @@ async function workerMain() {
     parentPort.postMessage(`[${maskEmail(email)}] Memproses akun...`);
 
     const checkEmailResponse = await axios.post(
-      "https://apix.securitylabs.xyz/v1/auth/check-exist-email",
+      "https://node.securitylabs.xyz/api/v1/auth/check-exist-email",
       { email },
       axiosConfig
     );
@@ -142,7 +142,7 @@ async function workerMain() {
     }
 
     const signInResponse = await axios.post(
-      "https://apix.securitylabs.xyz/v1/auth/signin-user",
+      "https://node.securitylabs.xyz/api/v1/auth/signin-user",
       { email, password },
       axiosConfig
     );
@@ -152,10 +152,10 @@ async function workerMain() {
     axiosConfig.headers = headers;
 
 
-    const getUserResponse = await axios.get("https://apix.securitylabs.xyz/v1/users", axiosConfig);
+    const getUserResponse = await axios.get("https://node.securitylabs.xyz/api/v1/users", axiosConfig);
     const userId = getUserResponse.data.id;
 
-    const getWalletResponse = await axios.get("https://apix.securitylabs.xyz/v1/wallets", axiosConfig);
+    const getWalletResponse = await axios.get("https://node.securitylabs.xyz/api/v1/wallets", axiosConfig);
     const maskedWallet = maskWalletAddress(getWalletResponse.data[0].address);
     parentPort.postMessage(`\x1b[38;5;123m[${maskEmail(email)}] Alamat wallet: ${maskedWallet}\x1b[0m`);
 

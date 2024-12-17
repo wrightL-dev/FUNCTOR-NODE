@@ -1,4 +1,4 @@
-const { HttpsProxyAgent } = require('https-proxy-agent');
+const { HttpsProxyAgent } = require("https-proxy-agent");
 const {
   Worker,
   isMainThread,
@@ -21,7 +21,8 @@ function clearConsole() {
 
 function maskEmail(email) {
   const [name, domain] = email.split("@");
-  const maskedName = name.slice(0, 2) + "*".repeat(name.length - 4) + name.slice(-2);
+  const maskedName =
+    name.slice(0, 2) + "*".repeat(name.length - 4) + name.slice(-2);
   return `${maskedName}@${domain}`;
 }
 
@@ -40,41 +41,66 @@ function readAccounts() {
 }
 
 async function claimMiningReward(userId, headers, email, axiosConfig) {
+  const maskedEmail = maskEmail(email);
   try {
-    await axios.get(`https://node.securitylabs.xyz/api/v1/users/earn/${userId}`, axiosConfig);
-    parentPort.postMessage(`\x1b[38;5;121mReward mining diklaim untuk user ${maskEmail(email)}\x1b[0m`);
+    await axios.get(
+      `https://node.securitylabs.xyz/api/v1/users/earn/${userId}`,
+      axiosConfig
+    );
+    parentPort.postMessage(
+      `\x1b[38;5;121mReward mining diklaim untuk user ${maskEmail(
+        email
+      )}\x1b[0m`
+    );
   } catch (error) {
     parentPort.postMessage(
-      `\x1b[38;5;168mKesalahan klaim reward mining : ${error.response?.data?.message || error.message}\x1b[0m`
+      `\x1b[38;5;168m[${maskedEmail}] Error claim reward mining : ${
+        error.response?.data?.message || error.message
+      }\x1b[0m`
     );
   }
 }
 
-async function activateEpoch(headers, axiosConfig) {
+async function activateEpoch(headers, email, axiosConfig) {
+  const maskedEmail = maskEmail(email);
   try {
     const activateHeaders = { ...headers };
-    activateHeaders.Origin = "chrome-extension://gahmmgacnfeohncipkjfjfbdlpbfkfhi";
+    activateHeaders.Origin =
+      "chrome-extension://gahmmgacnfeohncipkjfjfbdlpbfkfhi";
 
-    await axios.get("https://node.securitylabs.xyz/api/v1/epoch/active", { ...axiosConfig, headers: activateHeaders });
-    parentPort.postMessage(`\x1b[38;5;121mEpoch diaktifkan\x1b[0m`);
+    const response = await axios.get(
+      "https://node.securitylabs.xyz/api/v1/epoch/active",
+      {
+        ...axiosConfig,
+        headers: activateHeaders
+      }
+    );
   } catch (error) {
-    parentPort.postMessage(`\x1b[38;5;168mKesalahan aktivasi epoch: ${error.message}\x1b[0m`);
+    parentPort.postMessage(
+      `\x1b[38;5;168m[${maskedEmail}]Error activating the epoch: ${error.message}\x1b[0m`
+    );
   }
 }
 
-async function activateEpochLoop(headers, axiosConfig) {
+async function activateEpochLoop(headers, email, axiosConfig) {
+  const maskedEmail = maskEmail(email);
   try {
-    await activateEpoch(headers, axiosConfig);
+    await activateEpoch(headers, email, axiosConfig);
     const randomDelay = Math.floor(Math.random() * 3 + 1) * 60000;
     parentPort.postMessage(
-      `\x1b[38;5;147mMenunggu ${randomDelay / 60000} menit sebelum aktivasi epoch lagi\x1b[0m`
+      `\x1b[38;5;147m[${maskedEmail}]Activate the epoch. Waiting ${
+        randomDelay / 60000
+      } minute before reactivating the epoch\x1b[0m`
     );
-    setTimeout(() => activateEpochLoop(headers, axiosConfig), randomDelay);
+    setTimeout(
+      () => activateEpochLoop(headers, email, axiosConfig),
+      randomDelay
+    );
   } catch (error) {
     parentPort.postMessage(
-      `\x1b[38;5;168mKesalahan pada activateEpochLoop: ${error.message}\x1b[0m`
+      `\x1b[38;5;168m[${maskedEmail}]Error activateEpochLoop: ${error.message}\x1b[0m`
     );
-    setTimeout(() => activateEpochLoop(headers, axiosConfig), 60000);
+    setTimeout(() => activateEpochLoop(headers, email, axiosConfig), 60000);
   }
 }
 
@@ -82,17 +108,20 @@ async function workerMain() {
   const { email, password } = workerData;
   const maskedEmail = maskEmail(email);
   let proxyString = null;
-  let proxyStatus = "Tanpa Proxy";
+  let proxyStatus = "Without Proxy";
 
   try {
-    const proxyFileContent = fs.existsSync("proxy.txt") ? fs.readFileSync("proxy.txt", "utf-8") : "";
+    const proxyFileContent = fs.existsSync("proxy.txt")
+      ? fs.readFileSync("proxy.txt", "utf-8")
+      : "";
     if (proxyFileContent.trim() !== "") {
       proxyString = proxyFileContent.trim().split("\n")[0];
     }
   } catch (err) {
-    console.error(`\x1b[38;5;168m[${maskedEmail}] Gagal membaca file proxy: ${err.message}\x1b[0m`);
+    console.error(
+      `\x1b[38;5;168m[${maskedEmail}] Gagal membaca file proxy: ${err.message}\x1b[0m`
+    );
   }
-
 
   const headers = {
     Host: "node.securitylabs.xyz",
@@ -112,24 +141,32 @@ async function workerMain() {
     "Content-Type": "application/json"
   };
 
-
   let agent = null;
   let axiosConfig = { headers };
 
   if (proxyString) {
     try {
       agent = new HttpsProxyAgent(proxyString);
-      proxyStatus = `Proxy: ${proxyString.split('@')[1] || proxyString}`;
+      proxyStatus = `${proxyString.split("@")[1] || proxyString}`;
       axiosConfig.httpsAgent = agent;
-      axiosConfig.proxy = false;
     } catch (err) {
-      console.error(`\x1b[38;5;168m[${maskedEmail}] Proxy tidak valid: ${err.message}\x1b[0m`);
+      console.error(
+        `\x1b[38;5;168m[${maskedEmail}] Proxy tidak valid: ${err.message}\x1b[0m`
+      );
     }
   }
 
   try {
     parentPort.postMessage(`[${maskEmail(email)}] Memproses akun...`);
 
+    // Check proxy
+    // const cekproxy = await axios.get("https://api.ipify.org?format=json", {
+    //   httpsAgent: agent
+    // });
+    // const ip  = cekproxy?.data.ip
+    // parentPort.postMessage(
+    //   `[${maskEmail(email)}] IP: ${ip}`
+    // );
     const checkEmailResponse = await axios.post(
       "https://node.securitylabs.xyz/api/v1/auth/check-exist-email",
       { email },
@@ -137,7 +174,9 @@ async function workerMain() {
     );
 
     if (!checkEmailResponse.data) {
-      parentPort.postMessage(`\x1b[38;5;168mEmail tidak ditemukan untuk akun: ${maskedEmail}\x1b[0m`);
+      parentPort.postMessage(
+        `\x1b[38;5;168mEmail tidak ditemukan untuk akun: ${maskedEmail}\x1b[0m`
+      );
       return;
     }
 
@@ -147,35 +186,48 @@ async function workerMain() {
       axiosConfig
     );
     const accessToken = signInResponse.data.accessToken;
-
+    parentPort.postMessage(
+      `[${maskEmail(email)}] Login success! | Proxy: ${proxyStatus}`
+    );
     headers["Authorization"] = `Bearer ${accessToken}`;
     axiosConfig.headers = headers;
 
-
-    const getUserResponse = await axios.get("https://node.securitylabs.xyz/api/v1/users", axiosConfig);
+    const getUserResponse = await axios.get(
+      "https://node.securitylabs.xyz/api/v1/users",
+      axiosConfig
+    );
     const userId = getUserResponse.data.id;
 
-    const getWalletResponse = await axios.get("https://node.securitylabs.xyz/api/v1/wallets", axiosConfig);
+    const getWalletResponse = await axios.get(
+      "https://node.securitylabs.xyz/api/v1/wallets",
+      axiosConfig
+    );
     const maskedWallet = maskWalletAddress(getWalletResponse.data[0].address);
-    parentPort.postMessage(`\x1b[38;5;123m[${maskEmail(email)}] Alamat wallet: ${maskedWallet}\x1b[0m`);
+    parentPort.postMessage(
+      `\x1b[38;5;123m[${maskEmail(
+        email
+      )}] Wallet Address: ${maskedWallet}\x1b[0m`
+    );
 
     claimMiningReward(userId, headers, email, axiosConfig);
-    setInterval(() => claimMiningReward(userId, headers, email, axiosConfig), 86400000);
+    setInterval(
+      () => claimMiningReward(userId, headers, email, axiosConfig),
+      86400000
+    );
+    activateEpochLoop(headers, email, axiosConfig);
 
-    activateEpochLoop(headers, axiosConfig);
-
-    parentPort.postMessage(`[${maskEmail(email)}] Berhasil Login Dengan Email: ${maskedEmail} | ${proxyStatus}`);
 
   } catch (error) {
-    parentPort.postMessage(`\x1b[38;5;168m[${maskedEmail}] Kesalahan untuk akun ${maskedEmail}: ${error.message}\x1b[0m`);
+    parentPort.postMessage(
+      `\x1b[38;5;168m[${maskedEmail}] Error acccount ${maskedEmail}: ${error.message}\x1b[0m`
+    );
   }
 }
-
 
 if (isMainThread) {
   clearConsole();
 
-  function main() {
+  async function main() {
     const accounts = readAccounts();
     for (const account of accounts) {
       const worker = new Worker(__filename, { workerData: account });
